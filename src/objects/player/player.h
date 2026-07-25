@@ -10,7 +10,6 @@ public:
     Player(){
         std::string path = Config::sourceDir + "/assets/car1.png";
         Image image = LoadImage(path.c_str());
-        ImageResize(&image, 64, 64);
         texture = LoadTextureFromImage(image);
         UnloadImage(image);
     }
@@ -42,8 +41,6 @@ public:
     }
 
     void updateDrawing() override {
-        DrawCircleV(position, 40, PURPLE);
-
         DrawTexture(texture, position.x - texture.width / 2.0, position.y - texture.height / 2.0, WHITE);
     }
 };
