@@ -1,12 +1,14 @@
 #include <climits>
 #include <raylib.h>
-#include <string>
 #include "game.h"
 #include "config.h"
-#include "image_loader/image_loader.h"
-#include "objects/base/base.h"
+
 #include "objects/enemy/enemy.h"
-#include <iostream>
+#include "objects/player/player.h"
+
+#include "object_manager/object_manager.h"
+#include "ui_manager/ui_manager.h"
+#include "collision_manager/collision_manager.h"
 
 void Game::init(){
     SetTargetFPS(Config::targetFps);
@@ -60,107 +62,4 @@ void Game::resetGame(){
     Game::startGame();
 }
 
-void DrawingManager::drawRoad(){
-    std::string path = Config::sourceDir + "/assets/road1.png";
-    DrawingManager::roadTexture = ImageLoader::loadTexture(path.c_str());
-
-    int xPos = (Config::screenWidth / 2) - (DrawingManager::roadTexture.width / 2);
-    int yTotalSize = 0;
-
-    while (yTotalSize < Config::screenHeight){
-        DrawTexture(DrawingManager::roadTexture, xPos, yTotalSize, WHITE);
-        yTotalSize += DrawingManager::roadTexture.height;
-    }
-}
-
-void DrawingManager::gameDrawing(){
-    BeginDrawing();
-
-    ClearBackground(RAYWHITE);
-
-    DrawText(TextFormat("FPS: %i ", GetFPS()), 10, 10, 20, DARKGRAY);
-    DrawText(TextFormat("Time: %.2f ", game.getTimeCounter()), 10, 30, 20, DARKGRAY);
-
-    drawRoad();
-
-    objectManager.updateDrawingObjects();
-
-    EndDrawing();
-}
-
-void ObjectManager::createEnemies(){
-    for (int i = 0; i != Config::enemyCount; i++){
-        Enemy enemy = Enemy();
-        enemy.name = "Enemy" + std::to_string(i);
-        objectManager.enemyList.push_back(enemy);
-    }
-}
-
-void ObjectManager::updateObjects(float delta){
-    player->update(delta);
-    for (Enemy& enemy : enemyList){
-        enemy.update(delta);
-    }
-    // for (int i = 0; i < objectList.size(); i++){
-    //     objectList[i]->update(delta);
-    // }
-    for (auto& obj : objectList){
-        obj->update(delta);
-    }
-}
-
-void ObjectManager::updateDrawingObjects(){
-    player->updateDrawing();
-    for (Enemy& enemy : enemyList){
-        enemy.updateDrawing();
-    }
-}
-
-void UIManager::showStartMenu(){
-    uiManager.startMenuOpen = true;
-    game.pauseGame();
-}
-
-void UIManager::showEndMenu(){
-    uiManager.endMenuOpen = true;
-    game.pauseGame();
-}
-
-void CollisionManager::checkPlayerCollisions(){
-    Player* player = objectManager.getPlayer();
-
-    for (Enemy& enemy : objectManager.getEnemyList()){
-        player->hitEnemy = CheckCollisionRecs(player->collisionRect, enemy.collisionRect);
-        //if (Game::player.hitEnemy) Game::resetGame();
-    }
-
-    for (Rectangle& wall : hWalls){
-        player->hitWall = CheckCollisionRecs(player->collisionRect, wall);
-        if (!player->hitWall) continue;
-
-        Rectangle rect = GetCollisionRec(player->collisionRect, wall);
-        
-        if (player->position.x > Config::screenWidth / 2.0) player->position.x -= rect.width;
-        else player->position.x += rect.width;
-
-        break;
-    }
-
-    for (Rectangle& wall : vWalls){
-        player->hitWall = CheckCollisionRecs(player->collisionRect, wall);
-        if (!player->hitWall) continue;
-
-        Rectangle rect = GetCollisionRec(player->collisionRect, wall);
-        
-        if (player->position.y > Config::screenHeight / 2.0) player->position.y -= rect.height;
-        else player->position.y += rect.height;
-        
-        break;
-    }
-}
-
 Game game = Game();
-DrawingManager drawingManager = DrawingManager();
-ObjectManager objectManager = ObjectManager();
-UIManager uiManager = UIManager();
-CollisionManager collisionManager = CollisionManager();

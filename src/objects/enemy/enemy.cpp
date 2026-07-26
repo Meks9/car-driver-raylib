@@ -5,19 +5,6 @@
 #include "config.h"
 #include "image_loader/image_loader.h"
 
-void Enemy::update(float delta) {
-    velocity.x = direction.x * speed;
-    velocity.y = direction.y * speed + (game.getTimeCounter() * SPEED_ADDITION_MULTIPLIER);
-
-    position.x += velocity.x * delta;
-    position.y += velocity.y * delta;
-
-    collisionRect.x = position.x - collisionRect.width / 2;
-    collisionRect.y = position.y - collisionRect.height / 2;
-
-    if (position.y > Config::screenHeight) placeAtRandomSpawn();
-}
-
 void Enemy::loadTexture(){
     std::string path = Config::sourceDir + "/assets/car1.png";
     Enemy::texture = ImageLoader::loadTexture(path.c_str());
@@ -34,4 +21,21 @@ void Enemy::placeAtRandomSpawn(){
     position = point;  
 }
 
+void Enemy::update(float delta){
+    velocity.x = direction.x * speed;
+    velocity.y = direction.y * speed + (game.getTimeCounter() * SPEED_ADDITION_MULTIPLIER);
+
+    position.x += velocity.x * delta;
+    position.y += velocity.y * delta;
+
+    collisionRect.x = position.x - collisionRect.width / 2;
+    collisionRect.y = position.y - collisionRect.height / 2;
+
+    if (position.y > Config::screenHeight) placeAtRandomSpawn();
+}
+
+void Enemy::updateDrawing(){
+    DrawTexture(texture, position.x - texture.width / 2.0, position.y - texture.height / 2.0, WHITE);
+    DrawRectangleRec(collisionRect, RED);
+}
 
