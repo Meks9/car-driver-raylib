@@ -6,22 +6,16 @@
 #include "config.h"
 #include "objects/player/player.h"
 #include "objects/enemy/enemy.h"
+#include "image_loader/image_loader.h"
 
 void Game::init(){
     SetTargetFPS(Config::targetFps);
     SetRandomSeed(GetRandomValue(1, INT_MAX));
 
-    Player* player = ObjectManager::createObject<Player>();
-    player->position = Vector2((float)Config::screenWidth / 2, (float)Config::screenHeight - 80);
-    player->name = "player";
-
-    // Road texture
     std::string path = Config::sourceDir + "/assets/road1.png";
-    Image image = LoadImage(path.c_str());
-    Game::roadTexture = LoadTextureFromImage(image);
-    UnloadImage(image);
+    Game::roadTexture = ImageLoader::loadTexture(path.c_str());
 
-    for (int i = 0; i != Config::roadLinesCount; i++){
+    for (int i = 0; i != Config::roadLanesCount; i++){
         int roadCenter = 72;
         int firstLane = (Config::screenWidth / 2) - roadCenter;
         Vector2 newSpawnPoint = Vector2(firstLane + roadCenter * i, -100);
@@ -29,17 +23,26 @@ void Game::init(){
         Game::carSpawnPoints.push_back(newSpawnPoint);
     }
 
-    for (int i = 1; i != 4; i++){
-        Enemy* enemy = ObjectManager::createObject<Enemy>();
-        enemy->name = "Enemy" + std::to_string(i);
-        enemy->placeAtRandomSpawn();
+    ObjectManager::player.loadTexture();
+    ObjectManager::player.position = Vector2((float)Config::screenWidth / 2, (float)Config::screenHeight - 80);
+    ObjectManager::player.name = "player";
+
+    for (int i = 0; i != Config::enemyCount; i++){
+        Enemy enemy = Enemy();
+        enemy.name = "Enemy" + std::to_string(i);
+        ObjectManager::enemyList.push_back(enemy);
     }
 }
 
 void Game::gameLogic(){
-    SetTargetFPS(Config::targetFps);
-
     float frameTime = GetFrameTime();
+
+    if (IsKeyPressed(KEY_P)) Game::isPaused = !Game::isPaused;
+
+    if (Game::isPaused) return;
+
+    SetTargetFPS(Config::targetFps);
+    Game::timeCounter += frameTime;
 
     ObjectManager::updateObjects(frameTime);
 }
@@ -60,9 +63,8 @@ void Game::gameDrawing(){
 
     ClearBackground(RAYWHITE);
 
-    const char* fpsText;
-    fpsText = TextFormat("FPS: %i (Target: %i)", GetFPS(), Config::targetFps);
     DrawText(TextFormat("FPS: %i ", GetFPS()), 10, 10, 20, DARKGRAY);
+    DrawText(TextFormat("Time: %.2f ", Game::timeCounter), 10, 30, 20, DARKGRAY);
 
     drawRoad();
 

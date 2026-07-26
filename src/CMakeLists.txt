@@ -8,9 +8,12 @@ add_executable(car-driver main.cpp
     objects/player/player.h
     objects/enemy/enemy.h
     object_manager/object_manager.cpp
+    object_manager/object_manager.h
     config.h
     game/game.cpp
-    game/game.h)
+    game/game.h
+    image_loader/image_loader.cpp
+    image_loader/image_loader.h)
 
 find_package(raylib 2.0 REQUIRED)
 target_link_libraries(car-driver raylib)

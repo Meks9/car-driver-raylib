@@ -2,42 +2,22 @@
 
 #include <raylib.h>
 #include <vector>
-#include <memory>
 
-#include "objects/base/base.h"
+//#include "objects/base/base.h"
+#include "objects/player/player.h"
+#include "objects/enemy/enemy.h"
 
 namespace ObjectManager{
-    inline std::vector<std::unique_ptr<Base>> objectList = {};
+    //extern std::vector<std::unique_ptr<Base>> objectList;
+    extern Player player;
+    extern std::vector<Enemy> enemyList;
 
-    // Create object of given class and returns regular ptr to it
-    template<typename T>
-    T* createObject(){
-        std::unique_ptr<T> newObj = std::make_unique<T>();
-        objectList.push_back(std::move(newObj));
-        return static_cast<T*>(objectList.back().get());
-    }
+    extern int wallWidth;
+    extern Rectangle wallRectLeft;
+    extern Rectangle wallRectRight;
+    extern std::vector<Rectangle> walls;
 
-    // template<typename T>
-    // T* addObject(std::unique_ptr<T> obj){
-    //     objectList.push_back(std::move(obj));
-    //     return static_cast<T*>(objectList.back().get());
-    // }
-
-    template<typename T>
-    void removeObject(T& targetObj){
-        for (int i = 0; i < objectList.size(); i++){
-            if (objectList[i].get() == targetObj) objectList.erase(objectList.end() - i);
-        }
-    }
-
-    template<typename T>
-    T* getObjectByName(std::string name){
-        for (std::unique_ptr<Base>& obj : objectList){
-            if (obj->name == name) return static_cast<T*>(obj.get());
-        }
-        return nullptr;
-    }
-
+    void init();
     void updateObjects(float delta);
     void updateDrawingObjects();
 

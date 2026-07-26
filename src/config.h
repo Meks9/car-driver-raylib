@@ -8,5 +8,6 @@ namespace Config {
     inline int screenWidth = 800;
     inline int screenHeight = 450;
     inline const std::string sourceDir = std::filesystem::path(__FILE__).parent_path().string();
-    inline int roadLinesCount = 3;
+    inline int roadLanesCount = 3;
+    inline int enemyCount = 3;
 }
