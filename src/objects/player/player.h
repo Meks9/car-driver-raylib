@@ -1,16 +1,14 @@
 #pragma once
 
-#include <cstddef>
 #include <raylib.h>
 #include <string>
 #include "config.h"
 #include "objects/base/base.h"
 #include "image_loader/image_loader.h"
-#include <iostream>
 
 class Player : public Base {
 public:
-    Player(){position = Vector2(800, 300);}
+    Player(){}
 
     const float speed = 240.0f;
 
@@ -31,8 +29,10 @@ public:
 
     Vector2 getInputVector(){
         Vector2 input = Vector2();
-        if (IsKeyDown(KEY_A)) input.x -= 1;
-        if (IsKeyDown(KEY_D)) input.x += 1;
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) input.y -= 1;
+        if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) input.y += 1;
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) input.x -= 1;
+        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) input.x += 1;
 
         return input;
     }

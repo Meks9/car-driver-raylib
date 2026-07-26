@@ -5,11 +5,11 @@
 int main(){
     InitWindow(Config::screenWidth, Config::screenHeight, "Car Driver");
 
-    Game::init();
+    game.init();
 
     while (!WindowShouldClose()){
-        Game::gameLogic();
-        Game::gameDrawing();
+        game.gameLogic();
+        drawingManager.gameDrawing();
     }
 
     CloseWindow();
