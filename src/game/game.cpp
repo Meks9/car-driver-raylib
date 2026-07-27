@@ -1,14 +1,59 @@
 #include <climits>
+#include <memory>
 #include <raylib.h>
+#include <vector>
 #include "game.h"
 #include "config.h"
 
-#include "objects/enemy/enemy.h"
 #include "objects/player/player.h"
 
 #include "object_manager/object_manager.h"
 #include "ui_manager/ui_manager.h"
 #include "collision_manager/collision_manager.h"
+
+#include <iostream>
+
+void Game::setupRoad(){
+    for (int i = 0; i != Config::roadLanesCount; i++){
+        std::unique_ptr<RoadLane> newLane = std::make_unique<RoadLane>();
+
+        newLane->isFree = true;
+        newLane->roadWidth = 72;
+        newLane->spawnPoint = Vector2((Config::screenWidth / 2.0) - newLane->roadWidth + (i * newLane->roadWidth), 0);
+        newLane->turnFreePoint = newLane->spawnPoint.y + 50;
+
+        game.roadLanes.push_back(std::move(newLane));
+    }
+}
+
+RoadLane* Game::getLane(int index){
+    for (int i = 0; i < roadLanes.size(); i++){
+        if (i == index) return roadLanes[i].get();
+    }
+    return nullptr;
+}
+
+RoadLane* Game::getRandomFreeLane(){
+    std::vector<RoadLane*> freeLanes = {};
+    for (int i = 0; i < roadLanes.size(); i++){
+        RoadLane* lane = roadLanes[i].get();
+        if (lane->isFree) freeLanes.push_back(lane);
+    }
+
+    if (freeLanes.size() == 0) return nullptr;
+
+    int rand = GetRandomValue(0, freeLanes.size() - 1);
+    
+    return freeLanes[rand];
+}
+
+int Game::getLaneIndex(RoadLane* lane){
+    for (int i = 0; i < roadLanes.size(); i++){
+        if (roadLanes[i].get() == lane) return i;
+    }
+
+    return -1;
+}
 
 void Game::init(){
     SetTargetFPS(Config::targetFps);
@@ -18,16 +63,7 @@ void Game::init(){
     player->position = Vector2(800, 300);
     player->loadTexture();
 
-    for (int i = 0; i != Config::roadLanesCount; i++){
-        int roadCenter = 72;
-        int firstLane = (Config::screenWidth / 2) - roadCenter;
-        Vector2 newSpawnPoint = Vector2(firstLane + roadCenter * i, -100);
-
-        game.carSpawnPoints.push_back(newSpawnPoint);
-    }
-
-    Enemy* en = objectManager.createObject<Enemy>();
-    objectManager.removeObject(en);
+    setupRoad();
 
     game.startGame();
 }
@@ -39,6 +75,10 @@ void Game::startGame(){
 }
 
 void Game::gameLogic(){
+    for (int i = 0; i <roadLanes.size(); i++){
+        std::cout << roadLanes[i].get()->isFree << '\n';
+    }
+
     float frameTime = GetFrameTime();
 
     if (IsKeyPressed(KEY_P) && !(uiManager.isStartMenuOpen() || uiManager.isEndMenuOpen())) game.togglePause();

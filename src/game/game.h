@@ -1,21 +1,35 @@
 #pragma once
 
+#include <memory>
 #include <raylib.h>
 #include <vector>
 
+
+struct RoadLane{
+    int roadWidth;
+    Vector2 spawnPoint;
+    int turnFreePoint; // Y axis
+    bool isFree = true; // can enemy use it to tp itself to it
+};
+
+using RoadLanesVector = std::vector<std::unique_ptr<RoadLane>>;
+
 class Game{
 private:
-    std::vector<Vector2> carSpawnPoints;
 
     bool isPaused = false;
     float timeCounter = 0.0f;
 
 public:
+    RoadLanesVector roadLanes;
     float getTimeCounter() {return timeCounter;}
-    std::vector<Vector2> getCarSpawns() {return carSpawnPoints;}
+    RoadLane* getLane(int index);
     void togglePause() {isPaused = !isPaused;}
     void pauseGame() {isPaused = true;}
     void unpauseGame() {isPaused = false;}
+    void setupRoad();
+    RoadLane* getRandomFreeLane();
+    int getLaneIndex(RoadLane* lane);
     void init();
     void startGame();
     void gameLogic();

@@ -3,5 +3,6 @@
 #include <raylib.h>
 
 namespace ImageLoader {
-    extern Texture2D loadTexture(const char* path);
+    Texture2D loadTexture(const char* path);
+    Texture2D loadTextureRotate(const char* path, int degrees);
 }

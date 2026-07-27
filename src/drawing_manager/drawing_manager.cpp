@@ -11,8 +11,6 @@ void DrawingManager::init(){
 }
 
 void DrawingManager::drawRoad(){
-    // TODO: throw to trash. Each lane a class (freeSpawn, spawnPos) 
-    // if only 1 lane is free, don't spawn car there, need at least 2 free
     int xPos = (Config::screenWidth / 2) - (DrawingManager::roadTexture.width / 2);
     int yTotalSize = 0;
 

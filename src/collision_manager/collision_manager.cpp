@@ -8,7 +8,7 @@ void CollisionManager::checkPlayerCollisions(){
 
     for (Enemy& enemy : objectManager.getEnemyList()){
         player->hitEnemy = CheckCollisionRecs(player->collisionRect, enemy.collisionRect);
-        if (player->hitEnemy) game.resetGame();
+        //if (player->hitEnemy) game.resetGame();
     }
 
     for (Rectangle& wall : hWalls){
