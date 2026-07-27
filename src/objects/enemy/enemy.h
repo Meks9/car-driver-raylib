@@ -1,20 +1,17 @@
 #pragma once
 
 #include <raylib.h>
-#include "game/game.h"
 #include "objects/base/base.h"
-
-#include <iostream>
 
 class Enemy : public Base{
 private:
-    const float SPEED_ADDITION_MULTIPLIER = 2.1f;
+    const Vector2 noLineSpawn = Vector2(20, 200);
+    const float speedAdditionMultiplier = 2.5f;
     const float speed = 240.0f;
 public:
     Enemy(){
-        std::cout << "CONSTRUCT\n";
         loadTexture();
-        placeAtRandomSpawn();
+        position = Vector2(noLineSpawn.x, GetRandomValue(-100, 100));
         direction = Vector2(0, 1);
     }
 
@@ -28,7 +25,7 @@ public:
     bool isColliding = false;
     Rectangle collisionRect = Rectangle(0, 0, 24, 40);
 
-    RoadLane* currentLane = nullptr;
+    int laneIndex = -1;
 
     void loadTexture();
     void placeAtRandomSpawn();

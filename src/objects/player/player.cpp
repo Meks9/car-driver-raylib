@@ -15,6 +15,11 @@ Vector2 Player::getInputVector(){
     if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) input.x -= 1;
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) input.x += 1;
 
+    if (IsKeyDown(KEY_LEFT_SHIFT)){
+        input.x /= 2;
+        input.y /= 2;
+    }
+
     return input;
 }
 
@@ -32,6 +37,6 @@ void Player::update(float delta){
 
 void Player::updateDrawing(){
     DrawTexture(texture, position.x - texture.width / 2.0, position.y - texture.height / 2.0, WHITE);
-    DrawRectangleRec(collisionRect, BLUE);
+    //DrawRectangleRec(collisionRect, BLUE);
 }
 

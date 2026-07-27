@@ -9,6 +9,8 @@ int main(){
 
     game.init();
     drawingManager.init();
+    
+    game.startGame();
 
     while (!WindowShouldClose()){
         game.gameLogic();

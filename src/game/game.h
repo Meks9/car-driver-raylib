@@ -1,5 +1,6 @@
 #pragma once
 
+#include "objects/enemy/enemy.h"
 #include <memory>
 #include <raylib.h>
 #include <vector>
@@ -10,6 +11,7 @@ struct RoadLane{
     Vector2 spawnPoint;
     int turnFreePoint; // Y axis
     bool isFree = true; // can enemy use it to tp itself to it
+    Enemy* latestUser;
 };
 
 using RoadLanesVector = std::vector<std::unique_ptr<RoadLane>>;

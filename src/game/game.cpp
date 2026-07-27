@@ -10,8 +10,7 @@
 #include "object_manager/object_manager.h"
 #include "ui_manager/ui_manager.h"
 #include "collision_manager/collision_manager.h"
-
-#include <iostream>
+#include "drawing_manager/drawing_manager.h"
 
 void Game::setupRoad(){
     for (int i = 0; i != Config::roadLanesCount; i++){
@@ -19,8 +18,8 @@ void Game::setupRoad(){
 
         newLane->isFree = true;
         newLane->roadWidth = 72;
-        newLane->spawnPoint = Vector2((Config::screenWidth / 2.0) - newLane->roadWidth + (i * newLane->roadWidth), 0);
-        newLane->turnFreePoint = newLane->spawnPoint.y + 50;
+        newLane->spawnPoint = Vector2(drawingManager.getRoadLeftCorner() + (i * 72) + (newLane->roadWidth / 2.0), -50);
+        newLane->turnFreePoint = 0;
 
         game.roadLanes.push_back(std::move(newLane));
     }
@@ -62,23 +61,17 @@ void Game::init(){
     Player* player = objectManager.getPlayer();
     player->position = Vector2(800, 300);
     player->loadTexture();
-
-    setupRoad();
-
-    game.startGame();
 }
 
 void Game::startGame(){
+    setupRoad();
+
     objectManager.getPlayer()->position = (Vector2((float)Config::screenWidth / 2, (float)Config::screenHeight - 80));
 
     objectManager.createEnemies();
 }
 
 void Game::gameLogic(){
-    for (int i = 0; i <roadLanes.size(); i++){
-        std::cout << roadLanes[i].get()->isFree << '\n';
-    }
-
     float frameTime = GetFrameTime();
 
     if (IsKeyPressed(KEY_P) && !(uiManager.isStartMenuOpen() || uiManager.isEndMenuOpen())) game.togglePause();
@@ -91,6 +84,7 @@ void Game::gameLogic(){
 
     objectManager.updateObjects(frameTime);
 
+    collisionManager.createWalls();
     collisionManager.checkPlayerCollisions();
 }
 
@@ -98,8 +92,9 @@ void Game::resetGame(){
     Game::timeCounter = 0.0;
 
     objectManager.clearLists();
+    roadLanes.clear();
 
-    Game::startGame();
+    game.startGame();
 }
 
 Game game = Game();

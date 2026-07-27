@@ -9,19 +9,20 @@ private:
     const int hWallHeight = Config::screenHeight;
     const int vWallHeight = 10;
 
-    int hWallWidth = Config::screenWidth / 2 - 128;
-    int vWallWidth = Config::screenWidth;
+    int hWallWidth;
+    int vWallWidth;
 
-    Rectangle wallRectLeft = Rectangle(0, 0, hWallWidth, hWallHeight);
-    Rectangle wallRectRight = Rectangle(Config::screenWidth - hWallWidth, 0, hWallWidth, hWallHeight);
+    Rectangle wallRectLeft;
+    Rectangle wallRectRight;
 
-    Rectangle wallRectUp = Rectangle(0, 0, vWallWidth, vWallHeight);
-    Rectangle wallRectDown = Rectangle(0, Config::screenHeight, vWallWidth, vWallHeight);
+    Rectangle wallRectUp;
+    Rectangle wallRectDown;
 
-    std::vector<Rectangle> hWalls = {wallRectLeft, wallRectRight};
-    std::vector<Rectangle> vWalls = {wallRectUp, wallRectDown};
+    std::vector<Rectangle> hWalls;
+    std::vector<Rectangle> vWalls;
 
 public:
+    void createWalls();
     void checkPlayerCollisions();
 };
 

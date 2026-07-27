@@ -7,11 +7,8 @@
 
 void ObjectManager::createEnemies(){
     for (int i = 0; i != Config::enemyCount; i++){
-        std::cout << "CREATING " << i << '\n';
-
         Enemy enemy = Enemy();
         enemy.name = "Enemy" + std::to_string(i);
-        std::cout << enemy.name << '\n';
         objectManager.enemyList.push_back(enemy);
     }
 }

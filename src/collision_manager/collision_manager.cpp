@@ -1,7 +1,21 @@
 #include "collision_manager.h"
 
 #include "object_manager/object_manager.h"
-#include "game/game.h"
+#include "drawing_manager/drawing_manager.h"
+
+void CollisionManager::createWalls(){
+    hWallWidth = drawingManager.getRoadLeftCorner();
+    vWallWidth = Config::screenWidth;
+
+    wallRectLeft = Rectangle(0, 0, hWallWidth, hWallHeight);
+    wallRectRight = Rectangle(drawingManager.getRoadRightCorner(), 0, hWallWidth, hWallHeight);
+
+    wallRectUp = Rectangle(0, 0, vWallWidth, vWallHeight);
+    wallRectDown = Rectangle(0, Config::screenHeight, vWallWidth, vWallHeight);
+
+    hWalls = {wallRectLeft, wallRectRight};
+    vWalls = {wallRectUp, wallRectDown};
+}
 
 void CollisionManager::checkPlayerCollisions(){
     Player* player = objectManager.getPlayer();
