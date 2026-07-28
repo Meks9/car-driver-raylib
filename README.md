@@ -6,6 +6,10 @@ Car Driver is simple game made in raylib
 - Goal is to not get hit by enemy cars for as long as possible, but the longer you survive, faster the enemy cars are.
 - You can add and remove road lanes and enemies. (game tries to not overlap enemies, so not all of them can appear at same time)
 
+# Requirements
+- Raylib
+- cmake
+
 # Build
 
 To build it yourself use these commands:
