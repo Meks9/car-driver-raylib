@@ -1,7 +1,13 @@
 #include "collision_manager.h"
 
-#include "object_manager/object_manager.h"
+#include "game/game.h"
 #include "drawing_manager/drawing_manager.h"
+#include "object_manager/object_manager.h"
+#include <raylib.h>
+
+void CollisionManager::init(){
+    createWalls();
+}
 
 void CollisionManager::createWalls(){
     hWallWidth = drawingManager.getRoadLeftCorner();
@@ -19,31 +25,35 @@ void CollisionManager::createWalls(){
 
 void CollisionManager::checkPlayerCollisions(){
     Player* player = objectManager.getPlayer();
+    Rectangle playerCollisionRect = player->getCollisionRect();
 
     for (Enemy& enemy : objectManager.getEnemyList()){
-        player->hitEnemy = CheckCollisionRecs(player->collisionRect, enemy.collisionRect);
-        //if (player->hitEnemy) game.resetGame();
+        player->hitEnemy = CheckCollisionRecs(playerCollisionRect, enemy.getCollisionRect());
+        if (player->hitEnemy) {
+            game.resetGame();
+            return;
+        }
     }
 
     for (Rectangle& wall : hWalls){
-        player->hitWall = CheckCollisionRecs(player->collisionRect, wall);
+        player->hitWall = CheckCollisionRecs(playerCollisionRect, wall);
         if (!player->hitWall) continue;
 
-        Rectangle rect = GetCollisionRec(player->collisionRect, wall);
+        Rectangle rect = GetCollisionRec(playerCollisionRect, wall);
         
-        if (player->direction.x > 0.0) player->position.x -= rect.width;
+        if (player->getdirection().x > 0.0) player->position.x -= rect.width;
         else player->position.x += rect.width;
 
         break;
     }
 
     for (Rectangle& wall : vWalls){
-        player->hitWall = CheckCollisionRecs(player->collisionRect, wall);
+        player->hitWall = CheckCollisionRecs(playerCollisionRect, wall);
         if (!player->hitWall) continue;
 
-        Rectangle rect = GetCollisionRec(player->collisionRect, wall);
+        Rectangle rect = GetCollisionRec(playerCollisionRect, wall);
         
-        if (player->direction.y > 0.0) player->position.y -= rect.height;
+        if (player->getdirection().y > 0.0) player->position.y -= rect.height;
         else player->position.y += rect.height;
         
         break;

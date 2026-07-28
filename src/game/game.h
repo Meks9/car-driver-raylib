@@ -1,10 +1,10 @@
 #pragma once
 
-#include "objects/enemy/enemy.h"
 #include <memory>
 #include <raylib.h>
 #include <vector>
 
+#include "objects/enemy/enemy.h"
 
 struct RoadLane{
     int roadWidth;
@@ -18,21 +18,27 @@ using RoadLanesVector = std::vector<std::unique_ptr<RoadLane>>;
 
 class Game{
 private:
-
+    RoadLanesVector roadLanes;
     bool isPaused = false;
     float timeCounter = 0.0f;
+    float bestTime = 0.0f;
 
 public:
-    RoadLanesVector roadLanes;
     float getTimeCounter() {return timeCounter;}
-    RoadLane* getLane(int index);
+
+    float getBestTime() {return bestTime;}
     void togglePause() {isPaused = !isPaused;}
     void pauseGame() {isPaused = true;}
     void unpauseGame() {isPaused = false;}
+
     void setupRoad();
     RoadLane* getRandomFreeLane();
     int getLaneIndex(RoadLane* lane);
+    RoadLane* getLane(int index);
+    void setBestTime(float newTime);
+    
     void init();
+    void keyListen();
     void startGame();
     void gameLogic();
     void resetGame(); 

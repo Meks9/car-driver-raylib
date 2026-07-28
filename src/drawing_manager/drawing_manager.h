@@ -9,10 +9,18 @@ private:
     Texture2D rightRoadTexture;
     Texture2D* currentTexture;
 
+    bool showInfo = true;
+
 public:
+    const int roadWidth = 72;
+
+    void toggleShowInfo() {showInfo = !showInfo;}
+    
     void init();
+    void drawInfo();
     void drawRoad();
     void gameDrawing();
+    
     int getRoadLeftCorner();
     int getRoadRightCorner();
 };

@@ -2,6 +2,7 @@
 
 #include <raylib.h>
 #include <vector>
+
 #include "config.h"
 
 class CollisionManager{
@@ -22,6 +23,7 @@ private:
     std::vector<Rectangle> vWalls;
 
 public:
+    void init();
     void createWalls();
     void checkPlayerCollisions();
 };

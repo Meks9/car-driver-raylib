@@ -2,13 +2,11 @@
 
 #include <memory>
 
-#include "objects/base/base.h"
 #include "config.h"
 
 void ObjectManager::createEnemies(){
     for (int i = 0; i != Config::enemyCount; i++){
         Enemy enemy = Enemy();
-        enemy.name = "Enemy" + std::to_string(i);
         objectManager.enemyList.push_back(enemy);
     }
 }
@@ -17,10 +15,6 @@ void ObjectManager::updateObjects(float delta){
     player->update(delta);
     for (Enemy& enemy : enemyList){
         enemy.update(delta);
-    }
-
-    for (std::unique_ptr<Base>& obj : objectList){
-        obj->update(delta);
     }
 }
 

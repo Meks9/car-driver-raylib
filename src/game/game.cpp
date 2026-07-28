@@ -2,15 +2,15 @@
 #include <memory>
 #include <raylib.h>
 #include <vector>
-#include "game.h"
+
 #include "config.h"
 
-#include "objects/player/player.h"
-
+#include "game.h"
 #include "object_manager/object_manager.h"
-#include "ui_manager/ui_manager.h"
 #include "collision_manager/collision_manager.h"
 #include "drawing_manager/drawing_manager.h"
+
+#include "objects/player/player.h"
 
 void Game::setupRoad(){
     for (int i = 0; i != Config::roadLanesCount; i++){
@@ -23,13 +23,6 @@ void Game::setupRoad(){
 
         game.roadLanes.push_back(std::move(newLane));
     }
-}
-
-RoadLane* Game::getLane(int index){
-    for (int i = 0; i < roadLanes.size(); i++){
-        if (i == index) return roadLanes[i].get();
-    }
-    return nullptr;
 }
 
 RoadLane* Game::getRandomFreeLane(){
@@ -53,20 +46,56 @@ int Game::getLaneIndex(RoadLane* lane){
 
     return -1;
 }
+RoadLane* Game::getLane(int index){
+    for (int i = 0; i < roadLanes.size(); i++){
+        if (i == index) return roadLanes[i].get();
+    }
+    return nullptr;
+}
+
+void Game::setBestTime(float newTime){
+    if (newTime > bestTime) bestTime = newTime;
+}
 
 void Game::init(){
     SetTargetFPS(Config::targetFps);
     SetRandomSeed(GetRandomValue(1, INT_MAX));
 
     Player* player = objectManager.getPlayer();
-    player->position = Vector2(800, 300);
     player->loadTexture();
+}
+
+
+void Game::keyListen(){
+    if (IsKeyPressed(KEY_R)) game.resetGame();
+
+    if (IsKeyPressed(KEY_U)) {
+        Config::roadLanesCount++;
+        resetGame();
+    }
+    if (IsKeyPressed(KEY_J) && Config::roadLanesCount > 1){
+        Config::roadLanesCount--;
+        resetGame();
+    }
+
+    if (IsKeyPressed(KEY_I)){
+        Config::enemyCount++;
+        resetGame();
+    }
+    if (IsKeyPressed(KEY_K) && Config::enemyCount > 0){
+        Config::enemyCount--;
+        resetGame();
+    }
+
+    if (IsKeyPressed(KEY_O)) drawingManager.toggleShowInfo();
 }
 
 void Game::startGame(){
     setupRoad();
+    collisionManager.init();
 
-    objectManager.getPlayer()->position = (Vector2((float)Config::screenWidth / 2, (float)Config::screenHeight - 80));
+    Player* player = objectManager.getPlayer();
+    player->position = player->defaultPos;
 
     objectManager.createEnemies();
 }
@@ -74,22 +103,21 @@ void Game::startGame(){
 void Game::gameLogic(){
     float frameTime = GetFrameTime();
 
-    if (IsKeyPressed(KEY_P) && !(uiManager.isStartMenuOpen() || uiManager.isEndMenuOpen())) game.togglePause();
-    if (IsKeyPressed(KEY_R)) game.resetGame();
+    keyListen();
 
-    if (Game::isPaused) return;
+    if (isPaused) return;
 
     SetTargetFPS(Config::targetFps);
-    Game::timeCounter += frameTime;
+    timeCounter += frameTime;
 
     objectManager.updateObjects(frameTime);
 
-    collisionManager.createWalls();
     collisionManager.checkPlayerCollisions();
 }
 
 void Game::resetGame(){
-    Game::timeCounter = 0.0;
+    setBestTime(timeCounter);
+    timeCounter = 0.0;
 
     objectManager.clearLists();
     roadLanes.clear();

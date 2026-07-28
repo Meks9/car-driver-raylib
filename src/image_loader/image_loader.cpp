@@ -1,4 +1,5 @@
 #include "image_loader.h"
+
 #include <raylib.h>
 
 Texture2D ImageLoader::loadTexture(const char* path){

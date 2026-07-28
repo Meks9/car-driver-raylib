@@ -1,30 +1,34 @@
-#include <raylib.h>
 #include "enemy.h"
 
-#include "game/game.h"
+#include <raylib.h>
+#include <string>
+
 #include "config.h"
 #include "image_loader/image_loader.h"
 
+#include "game/game.h"
+
 void Enemy::loadTexture(){
-    std::string path = Config::sourceDir + "/assets/car1.png";
+    std::string carVariation = std::to_string(GetRandomValue(1, Config::carVariations));
+    std::string path = Config::sourceDir + "/assets/car" + carVariation + ".png";
     Enemy::texture = ImageLoader::loadTextureRotate(path.c_str(), 180);
 }
 
 void Enemy::placeAtRandomSpawn(){
     RoadLane* lane = game.getRandomFreeLane();
-    Vector2 point;
 
     if (lane == nullptr) {
-        point = noLineSpawn;
-        position = point;
+        position = noLineSpawn;
         return;
     }
 
+    Vector2 point;
+
     laneIndex = game.getLaneIndex(lane);
     point = lane->spawnPoint;
+
     lane->isFree = false;
     lane->latestUser = this;
-
     spawnOffset = Vector2(GetRandomValue(-20, 20), GetRandomValue(-350, -50));
 
     point.x += spawnOffset.x;
@@ -44,9 +48,7 @@ void Enemy::update(float delta){
 
     RoadLane* lane = game.getLane(laneIndex);
 
-    if (lane != nullptr && lane->latestUser == this){
-        if (position.y > lane->turnFreePoint) lane->isFree = true;
-    }
+    if (lane != nullptr && lane->latestUser == this && position.y > lane->turnFreePoint) lane->isFree = true;
     if (position.y > Config::screenHeight + 50) placeAtRandomSpawn();
 }
 

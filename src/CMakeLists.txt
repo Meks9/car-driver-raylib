@@ -14,8 +14,6 @@ add_executable(car-driver main.cpp
     drawing_manager/drawing_manager.h
     object_manager/object_manager.cpp
     object_manager/object_manager.h
-    ui_manager/ui_manager.cpp
-    ui_manager/ui_manager.h
     image_loader/image_loader.cpp
     image_loader/image_loader.h
     
@@ -23,10 +21,12 @@ add_executable(car-driver main.cpp
     objects/player/player.cpp
     objects/player/player.h
     objects/enemy/enemy.cpp
-    objects/enemy/enemy.h)
+    objects/enemy/enemy.h
+    math/vectorMath.h
+    math/vectorMath.cpp
+    )
 
 find_package(raylib 2.0 REQUIRED)
 target_link_libraries(car-driver raylib)
 
 target_include_directories(car-driver PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-
