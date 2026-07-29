@@ -3,14 +3,10 @@
 #include <raylib.h>
 
 #include "config.h"
-#include "objects/base/base.h"
+#include "objects/entity/entity.h"
 
-class Player : public Base {
+class Player : public Entity {
 private:
-    Vector2 velocity;
-    Vector2 direction;
-
-    Texture2D texture;
     Rectangle collisionRect = Rectangle(0, 0, 26, 52);
 
 public:
@@ -23,17 +19,14 @@ public:
     const float speed = 240.0f;
     const Vector2 defaultPos = Vector2(Config::screenWidth / 2.0, Config::screenHeight - 80);
     
-    Vector2 position;
-
     bool hitWall = false;
     bool hitEnemy = false;
 
     Rectangle getCollisionRect() {return collisionRect;}
-    Vector2 getdirection() {return direction;}
 
-    void loadTexture();
     Vector2 getInputVector();
 
+    void loadTexture() override;
     void update(float delta) override;
     void updateDrawing() override;
 };

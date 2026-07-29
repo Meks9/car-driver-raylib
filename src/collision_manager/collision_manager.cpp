@@ -41,7 +41,7 @@ void CollisionManager::checkPlayerCollisions(){
 
         Rectangle rect = GetCollisionRec(playerCollisionRect, wall);
         
-        if (player->getdirection().x > 0.0) player->position.x -= rect.width;
+        if (player->direction.x > 0.0) player->position.x -= rect.width;
         else player->position.x += rect.width;
 
         break;
@@ -53,7 +53,7 @@ void CollisionManager::checkPlayerCollisions(){
 
         Rectangle rect = GetCollisionRec(playerCollisionRect, wall);
         
-        if (player->getdirection().y > 0.0) player->position.y -= rect.height;
+        if (player->direction.y > 0.0) player->position.y -= rect.height;
         else player->position.y += rect.height;
         
         break;

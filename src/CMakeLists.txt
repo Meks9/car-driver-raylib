@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(car-driver main.cpp
     config.h
+    math/vectorMath.h
+    math/vectorMath.cpp
     
     game/game.cpp
     game/game.h
@@ -18,12 +20,15 @@ add_executable(car-driver main.cpp
     image_loader/image_loader.h
     
     objects/base/base.h
-    objects/player/player.cpp
-    objects/player/player.h
-    objects/enemy/enemy.cpp
-    objects/enemy/enemy.h
-    math/vectorMath.h
-    math/vectorMath.cpp
+    objects/entity/entity.h
+    objects/entity/player/player.cpp
+    objects/entity/player/player.h
+    objects/entity/enemy/enemy.cpp
+    objects/entity/enemy/enemy.h
+    objects/entity/bird/bird.cpp
+    objects/entity/bird/bird.h
+    objects/entity/tree/tree.h
+    objects/entity/tree/tree.cpp
     )
 
 find_package(raylib 2.0 REQUIRED)

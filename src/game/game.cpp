@@ -10,7 +10,7 @@
 #include "collision_manager/collision_manager.h"
 #include "drawing_manager/drawing_manager.h"
 
-#include "objects/player/player.h"
+#include "objects/entity/player/player.h"
 
 void Game::setupRoad(){
     for (int i = 0; i != Config::roadLanesCount; i++){
@@ -87,6 +87,8 @@ void Game::keyListen(){
         resetGame();
     }
 
+    if (IsKeyPressed(KEY_P)) Config::hideTrees = !Config::hideTrees;
+
     if (IsKeyPressed(KEY_O)) drawingManager.toggleShowInfo();
 }
 
@@ -97,7 +99,7 @@ void Game::startGame(){
     Player* player = objectManager.getPlayer();
     player->position = player->defaultPos;
 
-    objectManager.createEnemies();
+    objectManager.createObjects();
 }
 
 void Game::gameLogic(){
@@ -109,6 +111,7 @@ void Game::gameLogic(){
 
     SetTargetFPS(Config::targetFps);
     timeCounter += frameTime;
+    moveSpeed = game.getTimeCounter() * speedAdditionMultiplier;
 
     objectManager.updateObjects(frameTime);
 

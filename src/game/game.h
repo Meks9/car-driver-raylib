@@ -4,7 +4,7 @@
 #include <raylib.h>
 #include <vector>
 
-#include "objects/enemy/enemy.h"
+#include "objects/entity/enemy/enemy.h"
 
 struct RoadLane{
     int roadWidth;
@@ -23,7 +23,11 @@ private:
     float timeCounter = 0.0f;
     float bestTime = 0.0f;
 
+    const float speedAdditionMultiplier = 2.5f;
+    float moveSpeed = 0.0f;
+
 public:
+    float getMoveSpeed() {return moveSpeed;}
     float getTimeCounter() {return timeCounter;}
 
     float getBestTime() {return bestTime;}

@@ -36,7 +36,9 @@ void DrawingManager::drawInfo(){
     DrawText(TextFormat("Increase/Deacrease\ncar count: I/K"), 10, 310, 20, DARKGRAY);
     DrawText(TextFormat("Current: %i", Config::enemyCount), 10, 350, 20, DARKGRAY);
 
-    DrawText(TextFormat("Hide/Show text: O"), 10, 380, 20, DARKGRAY);
+    //DrawText(TextFormat("Hide/Show trees: P"), 10, 380, 20, DARKGRAY);
+    DrawText(TextFormat("Hide/Show this text: O"), 10, 400, 20, DARKGRAY);
+
 }
 
 void DrawingManager::drawRoad(){

@@ -2,15 +2,11 @@
 
 #include <raylib.h>
 
-#include "objects/base/base.h"
+#include "objects/entity/entity.h"
 
-class Enemy : public Base{
+class Enemy : public Entity{
 private:
-    Vector2 velocity;
-    Vector2 direction;
     Vector2 spawnOffset = Vector2(0, -100);
-
-    Texture2D texture;
     Rectangle collisionRect = Rectangle(0, 0, 26, 52);
 public:
     Enemy(){
@@ -22,17 +18,15 @@ public:
     ~Enemy() = default; 
 
     const Vector2 noLineSpawn = Vector2(-50, 500);
-    const float speedAdditionMultiplier = 2.5f;
-    const float speed = 240.0f;
+    float speed = 340.0f;
 
-    Vector2 position;
     int laneIndex = -1;
 
     Rectangle getCollisionRect() {return collisionRect;}
 
-    void loadTexture();
     void placeAtRandomSpawn();
 
+    void loadTexture() override;
     void update(float delta) override;
     void updateDrawing() override;
 };

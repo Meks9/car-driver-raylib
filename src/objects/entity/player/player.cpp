@@ -6,11 +6,6 @@
 #include "image_loader/image_loader.h"
 #include "math/vectorMath.h"
 
-void Player::loadTexture(){
-    std::string path = Config::sourceDir + "/assets/car1.png";
-    texture = ImageLoader::loadTexture(path.c_str());
-}
-
 Vector2 Player::getInputVector(){
     Vector2 input = Vector2();
     
@@ -20,6 +15,11 @@ Vector2 Player::getInputVector(){
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) input.x += 1;
 
     return input;
+}
+
+void Player::loadTexture(){
+    std::string path = Config::sourceDir + "/assets/car1.png";
+    texture = ImageLoader::loadTexture(path.c_str());
 }
 
 void Player::update(float delta){

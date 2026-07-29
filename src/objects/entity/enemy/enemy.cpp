@@ -38,7 +38,7 @@ void Enemy::placeAtRandomSpawn(){
 
 void Enemy::update(float delta){
     velocity.x = direction.x * speed;
-    velocity.y = direction.y * speed + (game.getTimeCounter() * speedAdditionMultiplier);
+    velocity.y = direction.y * speed + game.getMoveSpeed();
 
     position.x += velocity.x * delta;
     position.y += velocity.y * delta;
