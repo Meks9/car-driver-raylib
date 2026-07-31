@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "config.h"
-#include "objects/entity/bird/bird.h"
-#include "objects/entity/tree/tree.h"
+// #include "objects/entity/bird/bird.h"
+// #include "objects/entity/tree/tree.h"
 
 void ObjectManager::clearLists(){
     enemyList.clear();
@@ -18,12 +18,12 @@ void ObjectManager::createObjects(){
     }
 
     // for (int i = 0; i < 1; i++){
-    //     Bird* bird = createObject<Bird>();
+    //     createObject<Bird>();
     // }
 
-    for (int i = 0; i < Config::treeCount; i++){
-        //createObject<Tree>();
-    }
+    // for (int i = 0; i < Config::treeCount; i++){
+    //     createObject<Tree>();
+    // }
 }
 
 void ObjectManager::updateObjects(float delta){

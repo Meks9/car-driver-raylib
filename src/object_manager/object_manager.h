@@ -12,7 +12,7 @@ using ObjectList = std::vector<std::unique_ptr<Base>>;
 
 class ObjectManager{
 private:
-    std::unique_ptr<Player> player = std::make_unique<Player>();
+    std::unique_ptr<Player> player = std::make_unique<Player>(); //for whatever reason if it's not pointer it breaks
     std::vector<Enemy> enemyList = {};
     ObjectList objectList;
 

@@ -30,7 +30,7 @@ void CollisionManager::checkPlayerCollisions(){
     for (Enemy& enemy : objectManager.getEnemyList()){
         player->hitEnemy = CheckCollisionRecs(playerCollisionRect, enemy.getCollisionRect());
         if (player->hitEnemy) {
-            game.resetGame();
+            game.onPlayerHit();
             return;
         }
     }

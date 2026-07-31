@@ -26,7 +26,7 @@ void Player::update(float delta){
     direction = getInputVector();
     direction = VectorMath::normalizeVector2(direction);
 
-    if (IsKeyDown(KEY_LEFT_SHIFT)){
+    if (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT)){
         direction.x /= 2;
         direction.y /= 2;
     }

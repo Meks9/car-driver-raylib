@@ -72,6 +72,14 @@ void DrawingManager::gameDrawing(){
     objectManager.updateDrawingObjects();
     drawInfo();
 
+    if (game.isInEndMenu()){
+        DrawRectangle(0, 0, Config::screenWidth, Config::screenHeight, Color(0,0,0,100));
+
+        int textWidth = MeasureText("Press R to reset", 30);
+        Vector2 textPos = Vector2(Config::screenWidth / 2.0 - textWidth / 2.0, Config::screenHeight / 2.0);
+        DrawText(TextFormat("Press R to reset"), textPos.x, textPos.y, 30, WHITE);
+    }
+
     EndDrawing();
 }
 

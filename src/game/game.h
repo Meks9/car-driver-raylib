@@ -20,6 +20,7 @@ class Game{
 private:
     RoadLanesVector roadLanes;
     bool isPaused = false;
+    bool inEndMenu = false;
     float timeCounter = 0.0f;
     float bestTime = 0.0f;
 
@@ -31,6 +32,7 @@ public:
     float getTimeCounter() {return timeCounter;}
 
     float getBestTime() {return bestTime;}
+    bool isInEndMenu() {return inEndMenu;}
     void togglePause() {isPaused = !isPaused;}
     void pauseGame() {isPaused = true;}
     void unpauseGame() {isPaused = false;}
@@ -46,6 +48,7 @@ public:
     void startGame();
     void gameLogic();
     void resetGame(); 
+    void onPlayerHit();
 };
 
 extern Game game;

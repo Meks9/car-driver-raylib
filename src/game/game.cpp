@@ -103,13 +103,13 @@ void Game::startGame(){
 }
 
 void Game::gameLogic(){
-    float frameTime = GetFrameTime();
-
+    
     keyListen();
-
+    
     if (isPaused) return;
-
-    SetTargetFPS(Config::targetFps);
+    
+    float frameTime = GetFrameTime();
+    
     timeCounter += frameTime;
     moveSpeed = game.getTimeCounter() * speedAdditionMultiplier;
 
@@ -119,6 +119,9 @@ void Game::gameLogic(){
 }
 
 void Game::resetGame(){
+    unpauseGame();
+    inEndMenu = false;
+    
     setBestTime(timeCounter);
     timeCounter = 0.0;
 
@@ -126,6 +129,11 @@ void Game::resetGame(){
     roadLanes.clear();
 
     game.startGame();
+}
+
+void Game::onPlayerHit(){
+    pauseGame();
+    inEndMenu = true;
 }
 
 Game game = Game();
